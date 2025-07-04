@@ -28,7 +28,8 @@ class Project extends Model
         'job_id',
         'client_id',
         'project_manager_id',
-        'user_id'
+        'user_id',
+        'default_warehouse_id'
     ];
 
     public function workItems(): HasMany
@@ -69,6 +70,11 @@ class Project extends Model
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class, 'client_id');
+    }
+
+    public function defaultWarehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class, 'default_warehouse_id');
     }
 
     /**

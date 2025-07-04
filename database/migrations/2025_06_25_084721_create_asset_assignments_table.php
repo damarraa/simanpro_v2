@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('asset_assignments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tool_id')->constrained('tools')->cascadeOnDelete();
+            $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
+            $table->foreignId('assigned_by')->nullable()->constrained('users')->onDelete('set null');
+            $table->date('assigned_date');
+            $table->date('returned_date')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
