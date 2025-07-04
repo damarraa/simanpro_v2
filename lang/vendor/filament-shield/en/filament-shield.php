@@ -34,8 +34,8 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'nav.group' => 'Manajemen Hak Akses',
-    'nav.role.label' => 'Roles',
+    'nav.group' => 'Manajemen Pengguna & Hak Akses',
+    'nav.role.label' => 'Manajemen Hak Akses',
     'nav.role.icon' => 'heroicon-o-shield-check',
     'resource.label.role' => 'Role',
     'resource.label.roles' => 'Roles',

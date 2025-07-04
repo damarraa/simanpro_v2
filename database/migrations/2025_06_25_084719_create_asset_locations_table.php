@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('asset_locations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tool_id')->constrained('tools')->cascadeOnDelete();
+            $table->foreignId('warehouse_id')->constrained('warehouses')->cascadeOnDelete();
+            $table->integer('quantity')->default(0);
+            $table->timestamp('last_moved_at')->nullable();
             $table->timestamps();
         });
     }

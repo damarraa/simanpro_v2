@@ -28,6 +28,7 @@ class DailyProjectReportResource extends Resource
 {
     protected static ?string $model = DailyProjectReport::class;
     protected static ?string $navigationGroup = 'Manajemen Proyek';
+    protected static ?string $navigationLabel = 'Laporan Harian';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

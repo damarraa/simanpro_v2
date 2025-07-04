@@ -11,7 +11,7 @@ class WorkItemMaterials extends Model
     protected $table = 'work_item_materials';
 
     protected $fillable = [
-        'material_name',
+        'material_id',
         'quantity',
         'unit',
         'unit_price',
@@ -23,13 +23,8 @@ class WorkItemMaterials extends Model
         return $this->belongsTo(ProjectWorkItem::class, 'work_item_id');
     }
 
-    // public function calculateAndUpdateCosts(): void
-    // {
-    //     $totalMaterialCost = $this->workItemMaterials()->sum(DB::raw('quantity * unit_price'));
-    //     $totalLaborCost = $this->workItemLabors()->sum(DB::raw('quantity * rate'));
-
-    //     $this->unit_price = $totalMaterialCost + $totalLaborCost;
-    //     $this->total_planned_amount = $this->unit_price * $this->volume;
-    //     $this->saveQuietly(); // Gunakan saveQuietly() untuk menghindari infinite loop observer
-    // }
+    public function material(): BelongsTo
+    {
+        return $this->belongsTo(Material::class, 'material_id');
+    }
 }

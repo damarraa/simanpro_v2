@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ProjectWorkItemResource\RelationManagers;
 
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -21,8 +22,14 @@ class WorkItemMaterialsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                TextInput::make('material_name')
-                    ->label('Nama Material')
+                // TextInput::make('material_name')
+                //     ->label('Nama Material')
+                //     ->required(),
+
+                Select::make('material_id')
+                    ->relationship('material', 'name')
+                    ->searchable()
+                    ->preload()
                     ->required(),
 
                 TextInput::make('quantity')
@@ -45,9 +52,9 @@ class WorkItemMaterialsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('material_name')
+            ->recordTitleAttribute('material.name')
             ->columns([
-                TextColumn::make('material_name'),
+                TextColumn::make('material.name'),
                 TextColumn::make('quantity'),
                 TextColumn::make('unit'),
                 TextColumn::make('unit_price')->money('IDR'),

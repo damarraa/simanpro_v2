@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
+            $table->string('warehouse_name');
+            $table->text('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->foreignId('pic_user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }

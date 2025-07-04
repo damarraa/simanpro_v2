@@ -84,6 +84,8 @@ class ProjectResource extends Resource
 
                                 TextInput::make('contract_value')
                                     ->label('Nilai Kontrak')
+                                    ->prefix('Rp')
+                                    ->numeric()
                                     ->inputMode('decimal')
                                     ->required(),
 
@@ -121,6 +123,13 @@ class ProjectResource extends Resource
                                         'Cancelled' => 'Cancelled',
                                         'Pending' => 'Pending'
                                     ]),
+
+                                Select::make('default_warehouse_id')
+                                    ->label('Gudang Default Untuk Proyek Ini')
+                                    ->relationship('defaultWarehouse', 'warehouse_name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->helperText('Pilih gudang utama tempat material untuk proyek ini akan diambil.'),
 
                                 // Latitude dan Longitude
                                 TextInput::make('latitude')

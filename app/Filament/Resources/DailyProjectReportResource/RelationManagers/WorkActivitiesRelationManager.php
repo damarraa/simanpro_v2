@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\DailyProjectReportResource\RelationManagers;
 
+use App\Models\InventoryStock;
 use App\Models\ProjectWorkItem;
 use App\Models\WorkActivityLog;
 use Closure;
@@ -36,7 +37,6 @@ class WorkActivitiesRelationManager extends RelationManager
                         if (!$projectId) {
                             return [];
                         }
-
                         return ProjectWorkItem::where('project_id', $projectId)->pluck('name', 'id');
                     })
                     ->searchable()
@@ -47,20 +47,31 @@ class WorkActivitiesRelationManager extends RelationManager
                     ->label('Volume Realisasi')
                     ->numeric()
                     ->required()
-                    ->helperText(function (Get $get): string {
-                        $work_item_id = $get('work_item_id');
-                        if (!$work_item_id) {
-                            return 'Pilih item pekerjaan terlebih dahulu.';
+                    // Menampilkan helper text dinamis
+                    ->helperText(function (Get $get, Livewire $livewire): string {
+                        $workItemId = $get('work_item_id');
+                        $warehouseId = $livewire->ownerRecord->project->default_warehouse_id;
+
+                        if (!$workItemId || !$warehouseId) {
+                            return 'Pilih item pekerjaan untuk melihat info stok.';
                         }
 
-                        $workItem = ProjectWorkItem::find($work_item_id);
-                        if (!$workItem) return '';
+                        $workItem = ProjectWorkItem::with('workItemMaterials.material')->find($workItemId);
+                        if (!$workItem || $workItem->workItemMaterials->isEmpty()) {
+                            return 'Item pekerjaan ini tidak memiliki kebutuhan material.';
+                        }
 
-                        $alreadyRealizedVolume = WorkActivityLog::where('work_item_id', $work_item_id)->sum('realized_volume');
-                        $remainingVolume = $workItem->volume - $alreadyRealizedVolume;
+                        $stockInfo = 'Info Stok di Gudang:';
+                        foreach ($workItem->workItemMaterials as $reqMaterial) {
+                            $stock = InventoryStock::where('warehouse_id', $warehouseId)
+                                ->where('material_id', $reqMaterial->material_id)
+                                ->first();
 
-                        // Tampilkan pesan bantuan yang informatif
-                        return "Sisa volume: " . number_format($remainingVolume, 2) . " " . $workItem->unit;
+                            $currentStock = $stock->current_stock ?? 0;
+                            $stockInfo .= "\n- {$reqMaterial->material->name}: {$currentStock} {$reqMaterial->material->unit}";
+                        }
+
+                        return nl2br(e($stockInfo)); // Tampilkan sebagai HTML dengan line break
                     })
                     ->rules([
                         function (Get $get, $component) {
