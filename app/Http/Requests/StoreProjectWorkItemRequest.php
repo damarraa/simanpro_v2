@@ -2,18 +2,17 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Material;
+use App\Models\ProjectWorkItem;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMaterialRequest extends FormRequest
+class StoreProjectWorkItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        // return false;
-        return $this->user()->can('create', Material::class);
+        return $this->user()->can('create', ProjectWorkItem::class);
     }
 
     /**
@@ -24,14 +23,10 @@ class StoreMaterialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'sku' => 'required|string|max:255|unique:materials,sku',
             'name' => 'required|string|max:255',
             'unit' => 'required|string|max:100',
+            'volume' => 'required|numeric|min:0',
             'description' => 'nullable|string',
-            'is_dpt' => 'required|boolean',
-            'supplier_id' => 'nullable|integer|exists:suppliers,id',
-            // Validasi untuk file gambar yang di-upload
-            'picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // 2MB Max
         ];
     }
 }

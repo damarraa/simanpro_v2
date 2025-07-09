@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('set null');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-            $table->timestamps(); // 🔥 Tambahkan ini untuk menghindari error 'created_at'/'updated_at'
+            $table->timestamps();
         });
     }
 

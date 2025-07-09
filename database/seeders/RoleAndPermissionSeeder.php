@@ -23,9 +23,8 @@ class RoleAndPermissionSeeder extends Seeder
 
         // Make permissions
         $permissions = [
-            'view users', 'edit users', 'delete users', 'create users', // Modul user management
-            'view projects', 'edit projects', 'delete projects', 'create projects', // Modul projects
-            // Type rest permissions here...
+            'view_user', 'view_any_user', 'create_user', 'update_user', 'delete_user', 'delete_any_user', 'force_delete_user', 'force_delete_any_user', 'restore_user', 'restore_any_user', 'replicate_user', 'reorder_user',
+            'view_project', 'view_any_project', 'create_project', 'update_project', 'delete_project', 'delete_any_project', 'force_delete_project', 'force_delete_any_project', 'restore_project', 'restore_any_project', 'replicate_project', 'reorder_project',
         ];
 
         foreach ($permissions as $permission) {

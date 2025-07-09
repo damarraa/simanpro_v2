@@ -34,29 +34,6 @@ class LoginController extends Controller
         ]);
     }
 
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|string|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
-
-        return response()->json([
-            'message' => 'Pengguna berhasil didaftarkan',
-            'user' => $user], 201);
-    }
-
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
