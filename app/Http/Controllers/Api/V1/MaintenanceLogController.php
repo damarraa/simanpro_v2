@@ -9,6 +9,8 @@ use App\Http\Resources\MaintenanceLogResource;
 use App\Models\MaintenanceLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 
 class MaintenanceLogController extends Controller
 {
@@ -32,9 +34,26 @@ class MaintenanceLogController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMaintenanceLogRequest $request)
+    public function store(StoreMaintenanceLogRequest $request): \Illuminate\Http\JsonResponse
     {
-        $log = MaintenanceLog::create($request->validated());
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+            $fileName = 'maintenance-' . $validatedData['vehicle_id'] . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $directory = 'maintenance-docs';
+            $path = $directory . '/' . $fileName;
+
+            $processedImage = Image::read($file)
+                ->scale(width: 1080)
+                ->toJpeg(quality: 75);
+
+            Storage::disk('public')->put($path, $processedImage);
+            $validatedData['docs_path'] = $path;
+        }
+
+        $log = MaintenanceLog::create($validatedData);
+
         return (new MaintenanceLogResource($log))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
@@ -62,7 +81,30 @@ class MaintenanceLogController extends Controller
     public function update(UpdateMaintenanceLogRequest $request, MaintenanceLog $maintenanceLog)
     {
         $this->authorize('update', $maintenanceLog);
-        $maintenanceLog->update($request->validated());
+
+        $validatedData = $request->validated();
+
+        if ($request->hasFile('document')) {
+            if ($maintenanceLog->docs_path) {
+                Storage::disk('public')->delete($maintenanceLog->docs_path);
+            }
+
+            $file = $request->file('document');
+            $fileName = 'maintenance-' . $maintenanceLog->vehicle_id . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $directory = 'maintenance-docs';
+            $path = $directory . '/' . $fileName;
+
+            $processedImage = Image::read($file)
+                ->scale(width: 1080)
+                ->toJpeg(quality: 75);
+
+            Storage::disk('public')
+                ->put($path, (string) $processedImage);
+
+            $validatedData['docs_path'] = $path;
+        }
+
+        $maintenanceLog->update($validatedData);
         return new MaintenanceLogResource($maintenanceLog);
     }
 
@@ -72,6 +114,11 @@ class MaintenanceLogController extends Controller
     public function destroy(MaintenanceLog $maintenanceLog)
     {
         $this->authorize('delete', $maintenanceLog);
+
+        if ($maintenanceLog->docs_path) {
+            Storage::disk('public')->delete($maintenanceLog->docs_path);
+        }
+
         $maintenanceLog->delete();
         return response()->noContent();
     }

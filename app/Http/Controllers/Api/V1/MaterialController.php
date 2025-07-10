@@ -93,8 +93,29 @@ class MaterialController extends Controller
      */
     public function update(UpdateMaterialRequest $request, Material $material)
     {
-        $material->update($request->validated());
+        $validatedData = $request->validated();
 
+        if ($request->hasFile('picture')) {
+            if ($material->picture_path) {
+                Storage::disk('public')->delete($material->picture_path);
+            }
+
+            $file = $request->file('picture');
+            $fileName = $validatedData['sku'] . '-' . Str::random(10) . '.jpg';
+            $directory = 'material-pictures';
+            $path = $directory . '/' . $fileName;
+
+            $processedImage = Image::read($file)
+                ->scale(width: 1080)
+                ->toJpeg(quality: 75);
+
+            Storage::disk('public')
+                ->put($path, (string) $processedImage);
+
+            $validatedData['picture_path'] = $path;
+        }
+
+        $material->update($validatedData);
         return new MaterialResource($material->load('supplier'));
     }
 
@@ -104,9 +125,7 @@ class MaterialController extends Controller
     public function destroy(Material $material)
     {
         $this->authorize('delete', $material);
-
         $material->delete();
-
         return response()->noContent();
     }
 }

@@ -31,8 +31,8 @@ class StoreUserRequest extends FormRequest
             'is_active' => 'required|boolean',
             'roles' => 'required|array',
             'roles.*' => 'integer|exists:roles,id',
-            'profile_picture' => 'nullable|image|max:2048',
-            'signature' => 'nullable|image|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi untuk file upload
+            'signature' => 'nullable|string', // Validasi untuk data Base64
         ];
     }
 }

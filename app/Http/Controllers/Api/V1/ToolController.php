@@ -81,8 +81,29 @@ class ToolController extends Controller
      */
     public function update(UpdateToolRequest $request, Tool $tool)
     {
-        $tool->update($request->validated());
+        $validatedData = $request->validated();
 
+        if ($request->hasFile('picture')) {
+            if ($tool->picture_path) {
+                Storage::disk('public')->delete($tool->picture_path);
+            }
+
+            $file = $request->file('picture');
+            $fileName = $validatedData['tool_code'] . '-' . Str::random(10) . '.jpg';
+            $directory = 'tool-pictures';
+            $path = $directory . '/' . $fileName;
+
+            $processedImage = Image::read($file)
+                ->scale(width: 1080)
+                ->toJpeg(quality: 75);
+
+            Storage::disk('public')
+                ->put($path, (string) $processedImage);
+
+            $validatedData['picture_path'] = $path;
+        }
+
+        $tool->update($validatedData);
         return new ToolResource($tool);
     }
 
@@ -92,9 +113,7 @@ class ToolController extends Controller
     public function destroy(Tool $tool)
     {
         $this->authorize('delete', $tool);
-
         $tool->delete();
-
         return response()->noContent();
     }
 }

@@ -26,10 +26,21 @@ class UserPolicy
      *
      * @param  \App\Models\User  $user
      * @return bool
+     * 
+     * 10/07/2025 - Penambahan parameter model
      */
-    public function view(User $user): bool
+    public function view(User $user, User $model): bool
     {
-        return $user->can('view_user');
+        // Original version
+        // return $user->can('view_user');
+
+        /**
+         * 10/07/2025 - Penambahan logika model
+         * $model disini adalah $user yang sedang coba dilihat.
+         * Skenario: Siapa yang boleh melihat detail satu user?
+         * Aturan: Boleh jika punya izin atau jika melihat profil sendiri.
+         */
+        return $user->id === $model->id || $user->can('view_user');
     }
 
     /**
@@ -49,9 +60,18 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function update(User $user): bool
+    public function update(User $user, User $model): bool
     {
-        return $user->can('update_user');
+        // Original version
+        // return $user->can('update_user');
+        
+        /**
+         * 10/07/2025 - Penambahan logika model
+         * $model disini adalah $user yang boleh edit data user.
+         * Skenario: Siapa yang boleh melihat data user?
+         * Aturan: Boleh jika punya izin atau jika mengedit profil sendiri.
+         */
+        return $user->id === $model->id || $user->can('update_user');
     }
 
     /**
@@ -60,8 +80,21 @@ class UserPolicy
      * @param  \App\Models\User  $user
      * @return bool
      */
-    public function delete(User $user): bool
+    public function delete(User $user, User $model): bool
     {
+        // Original Version
+        // return $user->can('delete_user');
+
+        /**
+         * 10/07/2025
+         * $model disini adalah user yang coba dihapus.
+         * Skenario: Siapa yang boleh menghapus user?
+         * Aturan: Boleh jika punya izin dan tidak sedang mencoba menghapus diri sendiri.
+         */
+        if ($user->id === $model->id) {
+            return false;
+        }
+
         return $user->can('delete_user');
     }
 

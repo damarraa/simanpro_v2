@@ -23,7 +23,19 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project): bool
     {
-        return $user->can('view_project');
+        // Original Version
+        // return $user->can('view_project');
+
+        /**
+         * 10/07/2025 - Penambahan logika model
+         * Skenario: Siapa yang boleh melihat detail satu proyek?
+         * Aturan: Boleh jika ia punya izin umum atau ia adalah PM proyek ini dan atau ia adalah tim proyek ini.
+         */
+        if ($user->can('view_project')) {
+            return true;
+        }
+
+        return $user->id === $project->project_manager_id || $project->team->contains($user);
     }
 
     /**
@@ -39,7 +51,19 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project): bool
     {
-        return $user->can('update_project');
+        // Original Version
+        // return $user->can('update_project');
+
+        /**
+         * 10/07/2025 - Penambahan logika model
+         * Skenario: Siapa yang boleh mengedit proyek?
+         * Aturan: Boleh jika ia punya izin umum atau ia adalah PM proyek ini.
+         */
+        if ($user->can('update_project')) {
+            return true;
+        }
+
+        return $user->id === $project->project_manager_id;
     }
 
     /**

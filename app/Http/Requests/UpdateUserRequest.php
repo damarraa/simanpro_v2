@@ -32,8 +32,8 @@ class UpdateUserRequest extends FormRequest
             'is_active' => 'sometimes|required|boolean',
             'roles' => 'sometimes|array',
             'roles.*' => 'integer|exists:roles,id',
-            'profile_picture' => 'sometimes|nullable|image|max:2048',
-            'signature' => 'sometimes|nullable|image|max:2048',
+            'profile_picture' => 'sometimes|nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'signature' => 'sometimes|nullable|string',
         ];
     }
 }

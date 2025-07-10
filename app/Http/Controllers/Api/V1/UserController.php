@@ -9,8 +9,10 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
 
 class UserController extends Controller
 {
@@ -39,15 +41,31 @@ class UserController extends Controller
         $validatedData = $request->validated();
 
         if ($request->hasFile('profile_picture')) {
-            $validatedData['profile_picture'] = $request->file('profile_picture')->store('user-profiles', 'public');
+            $file = $request->file('profile_picture');
+            $fileName = 'profile-' . Str::random(10) . '.jpg';
+            $path = 'user-profiles/' . $fileName;
+
+            $processedImage = Image::read($file)
+                ->scale(width: 500)
+                ->toJpeg(quality: 75);
+
+            Storage::disk('public')->put($path, (string) $processedImage);
+            $validatedData['profile_picture'] = $path;
         }
 
-        if ($request->hasFile('signature')) {
-            $validatedData['signature'] = $request->file('signature')->store('user-signatures', 'public');
+        if ($request->filled('signature')) {
+            $base64_image = $request->input('signature');
+            $fileName = 'signature-' . Str::random(10) . '.png';
+            $path = 'user-signatures/' . $fileName;
+
+            $processedImage = Image::read($base64_image)
+                ->toPng();
+
+            Storage::disk('public')->put($path, (string) $processedImage);
+            $validatedData['signature'] = $path;
         }
 
         $validatedData['password'] = Hash::make($validatedData['password']);
-
         $user = User::create($validatedData);
         $user->syncRoles($validatedData['roles']);
 
@@ -79,31 +97,48 @@ class UserController extends Controller
     {
         $validatedData = $request->validated();
 
-        // Handle file uploads for update
         if ($request->hasFile('profile_picture')) {
-            // Hapus file lama jika ada
             if ($user->profile_picture) {
-                Storage::disk('public')->delete($user->profile_picture);
+                Storage::disk('public')->delete($user->profile_pictures);
             }
-            $validatedData['profile_picture'] = $request->file('profile_picture')->store('user-profiles', 'public');
-        }
-        if ($request->hasFile('signature')) {
-            if ($user->signature) {
-                Storage::disk('public')->delete($user->signature);
-            }
-            $validatedData['signature'] = $request->file('signature')->store('user-signatures', 'public');
+
+            $file = $request->file('profile_picture');
+            $fileName = 'profile-' . Str::random(10) . '.jpg';
+            $path = 'user-profiles/' . $fileName;
+
+            $processedImage = Image::read($file)
+                ->scale(width: 500)
+                ->toJpeg(quality: 75);
+
+            Storage::disk('public')->put($path, (string) $processedImage);
+
+            $validatedData['profile_picture'] = $path;
         }
 
-        // Update password hanya jika diisi
+        if ($request->filled('signature')) {
+            if (Str::startsWith($request->input('signature'), 'data:image')) {
+                if ($user->signature) {
+                    Storage::disk('public')->delete($user->signature);
+                }
+
+                $base64_image = $request->input('signature');
+                $fileName = 'signature-' . Str::random(10) . '.png';
+                $path = 'user-signatures/' . $fileName;
+
+                $processedImage = Image::read($base64_image)
+                    ->toPng();
+
+                Storage::disk('public')->put($path, (string) $processedImage);
+                $validatedData['signature'] = $path;
+            }
+        }
+
         if (!empty($validatedData['password'])) {
             $validatedData['password'] = Hash::make($validatedData['password']);
         } else {
             unset($validatedData['password']);
         }
-
         $user->update($validatedData);
-
-        // Update roles jika ada dalam request
         if (isset($validatedData['roles'])) {
             $user->syncRoles($validatedData['roles']);
         }

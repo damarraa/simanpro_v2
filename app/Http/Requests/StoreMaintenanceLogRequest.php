@@ -29,7 +29,7 @@ class StoreMaintenanceLogRequest extends FormRequest
             'type' => 'required|string|in:Rutin,Insidental,Darurat',
             'location' => 'required|string|max:255',
             'notes' => 'nullable|string',
-            'docs_path' => 'nullable|string', // Asumsi path dikirim setelah upload
+            'document' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ];
     }
 }
