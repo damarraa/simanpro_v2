@@ -11,11 +11,18 @@ class MaterialPolicy
     use HandlesAuthorization;
 
     /**
+     * 16/07/2025 - Modifikasi penamaan Policy.
+     * Standar Filament Generate menggunakan _ (Underscore) diubah
+     * menjadi :: (Double colon).
+     */
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_material');
+        return $user->can('view_any::material');
+        // return $user->can('view_any_material');
     }
 
     /**
@@ -23,7 +30,8 @@ class MaterialPolicy
      */
     public function view(User $user, Material $material): bool
     {
-        return $user->can('view_material');
+        return $user->can('view::material');
+        // return $user->can('view_material');
     }
 
     /**
@@ -31,7 +39,8 @@ class MaterialPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_material');
+        return $user->can('create::material');
+        // return $user->can('create_material');
     }
 
     /**
@@ -39,7 +48,8 @@ class MaterialPolicy
      */
     public function update(User $user, Material $material): bool
     {
-        return $user->can('update_material');
+        return $user->can('update::material');
+        // return $user->can('update_material');
     }
 
     /**
@@ -47,7 +57,8 @@ class MaterialPolicy
      */
     public function delete(User $user, Material $material): bool
     {
-        return $user->can('delete_material');
+        return $user->can('delete::material');
+        // return $user->can('delete_material');
     }
 
     /**
@@ -55,7 +66,8 @@ class MaterialPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_material');
+        return $user->can('delete_any::material');
+        // return $user->can('delete_any_material');
     }
 
     /**
@@ -63,7 +75,8 @@ class MaterialPolicy
      */
     public function forceDelete(User $user, Material $material): bool
     {
-        return $user->can('force_delete_material');
+        return $user->can('force_delete::material');
+        // return $user->can('force_delete_material');
     }
 
     /**
@@ -71,7 +84,8 @@ class MaterialPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_material');
+        return $user->can('force_delete_any::material');
+        // return $user->can('force_delete_any_material');
     }
 
     /**
@@ -79,7 +93,8 @@ class MaterialPolicy
      */
     public function restore(User $user, Material $material): bool
     {
-        return $user->can('restore_material');
+        return $user->can('restore::material');
+        // return $user->can('restore_material');
     }
 
     /**
@@ -87,7 +102,8 @@ class MaterialPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_material');
+        return $user->can('restore_any::material');
+        // return $user->can('restore_any_material');
     }
 
     /**
@@ -95,7 +111,8 @@ class MaterialPolicy
      */
     public function replicate(User $user, Material $material): bool
     {
-        return $user->can('replicate_material');
+        return $user->can('replicate::material');
+        // return $user->can('replicate_material');
     }
 
     /**
@@ -103,6 +120,7 @@ class MaterialPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_material');
+        return $user->can('reorder::material');
+        // return $user->can('reorder_material');
     }
 }

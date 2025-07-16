@@ -11,11 +11,18 @@ class RolePolicy
     use HandlesAuthorization;
 
     /**
+     * 16/07/2025 - Modifikasi penamaan Policy.
+     * Standar Filament Generate menggunakan _ (Underscore) diubah
+     * menjadi :: (Double colon).
+     */
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_role');
+        return $user->can('view_any::role');
+        // return $user->can('view_any_role');
     }
 
     /**
@@ -23,7 +30,17 @@ class RolePolicy
      */
     public function view(User $user, Role $role): bool
     {
-        return $user->can('view_role');
+        /**
+         * Penambahan logika pengaman.
+         * Skenario: Siapa yang boleh melihat detail satu role?
+         * Aturan: Tidak boleh melihat detail Super Admin (kecuali diri sendiri)
+         */
+        if ($role->name === 'Super Admin' && !$user->hasRole('Super Admin')) {
+            return false;
+        }
+        return $user->can('view::role');
+
+        // return $user->can('view_role');
     }
 
     /**
@@ -31,7 +48,8 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_role');
+        return $user->can('create::role');
+        // return $user->can('create_role');
     }
 
     /**
@@ -39,7 +57,17 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        return $user->can('update_role');
+        /**
+         * Penambahan logika pengaman.
+         * Skenario: Siapa yang boleh mengedit role?
+         * Aturan: Tidak boleh mengedit role Super Admin.
+         */
+        if ($role->name === 'Super Admin') {
+            return false;
+        }
+        return $user->can('update::role');
+
+        // return $user->can('update_role');
     }
 
     /**
@@ -47,7 +75,17 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
-        return $user->can('delete_role');
+        /**
+         * Penambahan logika pengaman.
+         * Skenario: Siapa yang boleh menghapus role?
+         * Aturan: Tidak boleh menghapus role Super Admin.
+         */
+        if ($role->name === 'Super Admin') {
+            return false;
+        }
+        return $user->can('delete::role');
+
+        // return $user->can('delete_role');
     }
 
     /**
@@ -55,7 +93,8 @@ class RolePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_role');
+        return $user->can('delete_any::role');
+        // return $user->can('delete_any_role');
     }
 
     /**
@@ -63,7 +102,16 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-        return $user->can('{{ ForceDelete }}');
+        /**
+         * Penambahan logika pengaman.
+         * Skenario dan aturan sama dengan method delete.
+         */
+        if ($role->name === 'Super Admin') {
+            return false;
+        }
+        return $user->can('force_delete::role');
+
+        // return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +119,8 @@ class RolePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('{{ ForceDeleteAny }}');
+        return $user->can('force_delete_any::role');
+        // return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +128,16 @@ class RolePolicy
      */
     public function restore(User $user, Role $role): bool
     {
-        return $user->can('{{ Restore }}');
+        /**
+         * Penambahan logika pengaman.
+         * Skenario dan aturan sama dengan method delete.
+         */
+        if ($role->name === 'Super Admin') {
+            return false;
+        }
+        return $user->can('restore::role');
+
+        // return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +145,8 @@ class RolePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('{{ RestoreAny }}');
+        return $user->can('restore_any::role');
+        // return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +154,16 @@ class RolePolicy
      */
     public function replicate(User $user, Role $role): bool
     {
-        return $user->can('{{ Replicate }}');
+        /**
+         * Penambahan logika pengaman.
+         * Skenario dan aturan sama dengan method delete.
+         */
+        if ($role->name === 'Super Admin') {
+            return false;
+        }
+        return $user->can('replicate::role');
+
+        // return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +171,7 @@ class RolePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('{{ Reorder }}');
+        return $user->can('reorder::role');
+        // return $user->can('{{ Reorder }}');
     }
 }

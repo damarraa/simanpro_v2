@@ -11,6 +11,12 @@ class UserPolicy
     use HandlesAuthorization;
 
     /**
+     * 16/07/2025 - Modifikasi penamaan Policy.
+     * Standar Filament Generate menggunakan _ (Underscore) diubah
+     * menjadi :: (Double colon).
+     */
+
+    /**
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user
@@ -18,7 +24,8 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_user');
+        return $user->can('view_any::user');
+        // return $user->can('view_any_user');
     }
 
     /**
@@ -40,7 +47,7 @@ class UserPolicy
          * Skenario: Siapa yang boleh melihat detail satu user?
          * Aturan: Boleh jika punya izin atau jika melihat profil sendiri.
          */
-        return $user->id === $model->id || $user->can('view_user');
+        return $user->id === $model->id || $user->can('view::user');
     }
 
     /**
@@ -51,7 +58,8 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_user');
+        return $user->can('create::user');
+        // return $user->can('create_user');
     }
 
     /**
@@ -71,7 +79,7 @@ class UserPolicy
          * Skenario: Siapa yang boleh melihat data user?
          * Aturan: Boleh jika punya izin atau jika mengedit profil sendiri.
          */
-        return $user->id === $model->id || $user->can('update_user');
+        return $user->id === $model->id || $user->can('update::user');
     }
 
     /**
@@ -95,7 +103,9 @@ class UserPolicy
             return false;
         }
 
-        return $user->can('delete_user');
+        return $user->can('delete::user');
+
+        // return $user->can('delete_user');
     }
 
     /**
@@ -106,7 +116,8 @@ class UserPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_user');
+        return $user->can('delete_any::user');
+        // return $user->can('delete_any_user');
     }
 
     /**
@@ -117,7 +128,8 @@ class UserPolicy
      */
     public function forceDelete(User $user): bool
     {
-        return $user->can('force_delete_user');
+        return $user->can('force_delete::user');
+        // return $user->can('force_delete_user');
     }
 
     /**
@@ -128,7 +140,8 @@ class UserPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_user');
+        return $user->can('force_delete_any::user');
+        // return $user->can('force_delete_any_user');
     }
 
     /**
@@ -139,7 +152,8 @@ class UserPolicy
      */
     public function restore(User $user): bool
     {
-        return $user->can('restore_user');
+        return $user->can('restore::user');
+        // return $user->can('restore_user');
     }
 
     /**
@@ -150,7 +164,8 @@ class UserPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_user');
+        return $user->can('restore_any::user');
+        // return $user->can('restore_any_user');
     }
 
     /**
@@ -161,7 +176,8 @@ class UserPolicy
      */
     public function replicate(User $user): bool
     {
-        return $user->can('replicate_user');
+        return $user->can('replicate::user');
+        // return $user->can('replicate_user');
     }
 
     /**
@@ -172,6 +188,7 @@ class UserPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_user');
+        return $user->can('reorder::user');
+        // return $user->can('reorder_user');
     }
 }

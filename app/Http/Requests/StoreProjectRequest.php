@@ -35,6 +35,13 @@ class StoreProjectRequest extends FormRequest
             'contract_value' => 'required|numeric|min:0',
             'total_budget' => 'required|numeric|min:0',
             'status' => 'required|in:On-Progress,Completed,Cancelled,Pending',
+
+            /**
+             * Update 11/07/2025
+             * Modifikasi dan penambahan assign team.
+             */
+            'team_members' => 'nullable|array',
+            'team_members.*' => 'integer|exists:users,id',
         ];
     }
 }

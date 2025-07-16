@@ -11,11 +11,18 @@ class WarehousePolicy
     use HandlesAuthorization;
 
     /**
+     * 16/07/2025 - Modifikasi penamaan Policy.
+     * Standar Filament Generate menggunakan _ (Underscore) diubah
+     * menjadi :: (Double colon).
+     */
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_warehouse');
+        return $user->can('view_any::warehouse');
+        // return $user->can('view_any_warehouse');
     }
 
     /**
@@ -23,7 +30,8 @@ class WarehousePolicy
      */
     public function view(User $user, Warehouse $warehouse): bool
     {
-        return $user->can('view_warehouse');
+        return $user->can('view::warehouse');
+        // return $user->can('view_warehouse');
     }
 
     /**
@@ -31,7 +39,8 @@ class WarehousePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_warehouse');
+        return $user->can('create::warehouse');
+        // return $user->can('create_warehouse');
     }
 
     /**
@@ -39,7 +48,8 @@ class WarehousePolicy
      */
     public function update(User $user, Warehouse $warehouse): bool
     {
-        return $user->can('update_warehouse');
+        return $user->can('update::warehouse');
+        // return $user->can('update_warehouse');
     }
 
     /**
@@ -47,7 +57,8 @@ class WarehousePolicy
      */
     public function delete(User $user, Warehouse $warehouse): bool
     {
-        return $user->can('delete_warehouse');
+        return $user->can('delete::warehouse');
+        // return $user->can('delete_warehouse');
     }
 
     /**
@@ -55,7 +66,8 @@ class WarehousePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_warehouse');
+        return $user->can('delete_any::warehouse');
+        // return $user->can('delete_any_warehouse');
     }
 
     /**
@@ -63,7 +75,8 @@ class WarehousePolicy
      */
     public function forceDelete(User $user, Warehouse $warehouse): bool
     {
-        return $user->can('force_delete_warehouse');
+        return $user->can('force_delete::warehouse');
+        // return $user->can('force_delete_warehouse');
     }
 
     /**
@@ -71,7 +84,8 @@ class WarehousePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_warehouse');
+        return $user->can('force_delete_any::warehouse');
+        // return $user->can('force_delete_any_warehouse');
     }
 
     /**
@@ -79,7 +93,8 @@ class WarehousePolicy
      */
     public function restore(User $user, Warehouse $warehouse): bool
     {
-        return $user->can('restore_warehouse');
+        return $user->can('restore::warehouse');
+        // return $user->can('restore_warehouse');
     }
 
     /**
@@ -87,7 +102,8 @@ class WarehousePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_warehouse');
+        return $user->can('restore_any::warehouse');
+        // return $user->can('restore_any_warehouse');
     }
 
     /**
@@ -95,7 +111,8 @@ class WarehousePolicy
      */
     public function replicate(User $user, Warehouse $warehouse): bool
     {
-        return $user->can('replicate_warehouse');
+        return $user->can('replicate::warehouse');
+        // return $user->can('replicate_warehouse');
     }
 
     /**
@@ -103,6 +120,7 @@ class WarehousePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_warehouse');
+        return $user->can('reorder::warehouse');
+        // return $user->can('reorder_warehouse');
     }
 }

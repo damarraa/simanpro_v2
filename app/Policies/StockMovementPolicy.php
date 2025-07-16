@@ -11,11 +11,18 @@ class StockMovementPolicy
     use HandlesAuthorization;
 
     /**
+     * 16/07/2025 - Modifikasi penamaan Policy.
+     * Standar Filament Generate menggunakan _ (Underscore) diubah
+     * menjadi :: (Double colon).
+     */
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_stock::movement');
+        return $user->can('view_any::stock_movement');
+        // return $user->can('view_any_stock::movement');
     }
 
     /**
@@ -23,7 +30,8 @@ class StockMovementPolicy
      */
     public function view(User $user, StockMovement $stockMovement): bool
     {
-        return $user->can('view_stock::movement');
+        return $user->can('view::stock_movement');
+        // return $user->can('view_stock::movement');
     }
 
     /**
@@ -31,7 +39,8 @@ class StockMovementPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_stock::movement');
+        return $user->can('create::stock_movement');
+        // return $user->can('create_stock::movement');
     }
 
     /**
@@ -39,7 +48,8 @@ class StockMovementPolicy
      */
     public function update(User $user, StockMovement $stockMovement): bool
     {
-        return $user->can('update_stock::movement');
+        return $user->can('update::stock_movement');
+        // return $user->can('update_stock::movement');
     }
 
     /**
@@ -47,7 +57,8 @@ class StockMovementPolicy
      */
     public function delete(User $user, StockMovement $stockMovement): bool
     {
-        return $user->can('delete_stock::movement');
+        return $user->can('delete::stock_movement');
+        // return $user->can('delete_stock::movement');
     }
 
     /**
@@ -55,7 +66,8 @@ class StockMovementPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_stock::movement');
+        return $user->can('delete_any::stock_movement');
+        // return $user->can('delete_any_stock::movement');
     }
 
     /**
@@ -63,7 +75,8 @@ class StockMovementPolicy
      */
     public function forceDelete(User $user, StockMovement $stockMovement): bool
     {
-        return $user->can('force_delete_stock::movement');
+        return $user->can('force_delete::stock_movement');
+        // return $user->can('force_delete_stock::movement');
     }
 
     /**
@@ -71,7 +84,8 @@ class StockMovementPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_stock::movement');
+        return $user->can('force_delete_any::stock_movement');
+        // return $user->can('force_delete_any_stock::movement');
     }
 
     /**
@@ -79,7 +93,8 @@ class StockMovementPolicy
      */
     public function restore(User $user, StockMovement $stockMovement): bool
     {
-        return $user->can('restore_stock::movement');
+        return $user->can('restore::stock_movement');
+        // return $user->can('restore_stock::movement');
     }
 
     /**
@@ -87,7 +102,8 @@ class StockMovementPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_stock::movement');
+        return $user->can('restore_any::stock_movement');
+        // return $user->can('restore_any_stock::movement');
     }
 
     /**
@@ -95,7 +111,8 @@ class StockMovementPolicy
      */
     public function replicate(User $user, StockMovement $stockMovement): bool
     {
-        return $user->can('replicate_stock::movement');
+        return $user->can('replicate::stock_movement');
+        // return $user->can('replicate_stock::movement');
     }
 
     /**
@@ -103,6 +120,7 @@ class StockMovementPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_stock::movement');
+        return $user->can('reorder::stock_movement');
+        // return $user->can('reorder_stock::movement');
     }
 }

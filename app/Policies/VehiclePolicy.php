@@ -11,11 +11,18 @@ class VehiclePolicy
     use HandlesAuthorization;
 
     /**
+     * 16/07/2025 - Modifikasi penamaan Policy.
+     * Standar Filament Generate menggunakan _ (Underscore) diubah
+     * menjadi :: (Double colon).
+     */
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_vehicle');
+        return $user->can('view_any::vehicle');
+        // return $user->can('view_any_vehicle');
     }
 
     /**
@@ -23,7 +30,8 @@ class VehiclePolicy
      */
     public function view(User $user, Vehicle $vehicle): bool
     {
-        return $user->can('view_vehicle');
+        return $user->can('view::vehicle');
+        // return $user->can('view_vehicle');
     }
 
     /**
@@ -31,7 +39,8 @@ class VehiclePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_vehicle');
+        return $user->can('create::vehicle');
+        // return $user->can('create_vehicle');
     }
 
     /**
@@ -39,7 +48,8 @@ class VehiclePolicy
      */
     public function update(User $user, Vehicle $vehicle): bool
     {
-        return $user->can('update_vehicle');
+        return $user->can('update::vehicle');
+        // return $user->can('update_vehicle');
     }
 
     /**
@@ -47,7 +57,8 @@ class VehiclePolicy
      */
     public function delete(User $user, Vehicle $vehicle): bool
     {
-        return $user->can('delete_vehicle');
+        return $user->can('delete::vehicle');
+        // return $user->can('delete_vehicle');
     }
 
     /**
@@ -55,7 +66,8 @@ class VehiclePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_vehicle');
+        return $user->can('delete_any::vehicle');
+        // return $user->can('delete_any_vehicle');
     }
 
     /**
@@ -63,7 +75,8 @@ class VehiclePolicy
      */
     public function forceDelete(User $user, Vehicle $vehicle): bool
     {
-        return $user->can('force_delete_vehicle');
+        return $user->can('force_delete::vehicle');
+        // return $user->can('force_delete_vehicle');
     }
 
     /**
@@ -71,7 +84,8 @@ class VehiclePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_vehicle');
+        return $user->can('force_delete_any::vehicle');
+        // return $user->can('force_delete_any_vehicle');
     }
 
     /**
@@ -79,7 +93,8 @@ class VehiclePolicy
      */
     public function restore(User $user, Vehicle $vehicle): bool
     {
-        return $user->can('restore_vehicle');
+        return $user->can('restore::vehicle');
+        // return $user->can('restore_vehicle');
     }
 
     /**
@@ -87,7 +102,8 @@ class VehiclePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_vehicle');
+        return $user->can('restore_any::vehicle');
+        // return $user->can('restore_any_vehicle');
     }
 
     /**
@@ -95,7 +111,8 @@ class VehiclePolicy
      */
     public function replicate(User $user, Vehicle $vehicle): bool
     {
-        return $user->can('replicate_vehicle');
+        return $user->can('replicate::vehicle');
+        // return $user->can('replicate_vehicle');
     }
 
     /**
@@ -103,6 +120,7 @@ class VehiclePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_vehicle');
+        return $user->can('reorder::vehicle');
+        // return $user->can('reorder_vehicle');
     }
 }

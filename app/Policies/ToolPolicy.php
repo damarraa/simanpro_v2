@@ -11,11 +11,18 @@ class ToolPolicy
     use HandlesAuthorization;
 
     /**
+     * 16/07/2025 - Modifikasi penamaan Policy.
+     * Standar Filament Generate menggunakan _ (Underscore) diubah
+     * menjadi :: (Double colon).
+     */
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_tool');
+        return $user->can('view_any::tool');
+        // return $user->can('view_any_tool');
     }
 
     /**
@@ -23,7 +30,8 @@ class ToolPolicy
      */
     public function view(User $user, Tool $tool): bool
     {
-        return $user->can('view_tool');
+        return $user->can('view::tool');
+        // return $user->can('view_tool');
     }
 
     /**
@@ -31,7 +39,8 @@ class ToolPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_tool');
+        return $user->can('create::tool');
+        // return $user->can('create_tool');
     }
 
     /**
@@ -39,7 +48,8 @@ class ToolPolicy
      */
     public function update(User $user, Tool $tool): bool
     {
-        return $user->can('update_tool');
+        return $user->can('update::tool');
+        // return $user->can('update_tool');
     }
 
     /**
@@ -47,7 +57,8 @@ class ToolPolicy
      */
     public function delete(User $user, Tool $tool): bool
     {
-        return $user->can('delete_tool');
+        return $user->can('delete::tool');
+        // return $user->can('delete_tool');
     }
 
     /**
@@ -55,7 +66,8 @@ class ToolPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_tool');
+        return $user->can('delete_any::tool');
+        // return $user->can('delete_any_tool');
     }
 
     /**
@@ -63,7 +75,8 @@ class ToolPolicy
      */
     public function forceDelete(User $user, Tool $tool): bool
     {
-        return $user->can('force_delete_tool');
+        return $user->can('force_delete::tool');
+        // return $user->can('force_delete_tool');
     }
 
     /**
@@ -71,7 +84,8 @@ class ToolPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_tool');
+        return $user->can('force_delete_any::tool');
+        // return $user->can('force_delete_any_tool');
     }
 
     /**
@@ -79,7 +93,8 @@ class ToolPolicy
      */
     public function restore(User $user, Tool $tool): bool
     {
-        return $user->can('restore_tool');
+        return $user->can('restore::tool');
+        // return $user->can('restore_tool');
     }
 
     /**
@@ -87,7 +102,8 @@ class ToolPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_tool');
+        return $user->can('restore_any::tool');
+        // return $user->can('restore_any_tool');
     }
 
     /**
@@ -95,7 +111,8 @@ class ToolPolicy
      */
     public function replicate(User $user, Tool $tool): bool
     {
-        return $user->can('replicate_tool');
+        return $user->can('replicate::tool');
+        // return $user->can('replicate_tool');
     }
 
     /**
@@ -103,6 +120,7 @@ class ToolPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_tool');
+        return $user->can('reorder::tool');
+        // return $user->can('reorder_tool');
     }
 }

@@ -15,8 +15,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create(['name' => 'Super Admin']);
-
         $superAdmin = User::create([
             'name' => 'Super Admin',
             'email' => 'teknisi_it@prisan.co.id',
@@ -25,5 +23,35 @@ class UserSeeder extends Seeder
         ]);
 
         $superAdmin->assignRole('Super Admin');
+
+        // --- Dummy Project Manager ---
+        $pm = User::create([
+            'name' => 'PM ABC',
+            'email' => 'pm@example.com',
+            'password' => Hash::make('testing123'),
+            'is_active' => true,
+        ]);
+
+        $pm->assignRole('Project Manager');
+
+        // --- Dummy Logistic ---
+        $logistic = User::create([
+            'name' => 'Logistic ABC',
+            'email' => 'log@example.com',
+            'password' => Hash::make('testing123'),
+            'is_active' => true,
+        ]);
+
+        $logistic->assignRole('Logistic');
+
+        // --- Dummy Supervisor ---
+        $spv = User::create([
+            'name' => 'Spv ABC',
+            'email' => 'spv@example.com',
+            'password' => Hash::make('testing123'),
+            'is_active' => true,
+        ]);
+
+        $spv->assignRole('Supervisor');
     }
 }

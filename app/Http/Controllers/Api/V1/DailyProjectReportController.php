@@ -35,6 +35,15 @@ class DailyProjectReportController extends Controller
      */
     public function store(StoreDailyProjectReportRequest $request, Project $project)
     {
+        /**
+         * Update 11/07/2025
+         * Penambahan aturan baru
+         */
+        // Panggil method 'addDailyReport' dari ProjectPolicy
+        // untuk proyek spesifik ini ($project)
+        $this->authorize('addDailyReport', $project);
+
+        // Jika lolos otorisasi, sisa kodenya berjalan seperti biasa
         $validatedData = $request->validated();
         $validatedData['submitted_by'] = auth()->id();
 
@@ -43,6 +52,16 @@ class DailyProjectReportController extends Controller
         return (new DailyProjectReportResource($dailyReport))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
+
+        // Original Version
+        // $validatedData = $request->validated();
+        // $validatedData['submitted_by'] = auth()->id();
+
+        // $dailyReport = $project->dailyReports()->create($validatedData);
+
+        // return (new DailyProjectReportResource($dailyReport))
+        //     ->response()
+        //     ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**

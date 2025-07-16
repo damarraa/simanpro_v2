@@ -35,6 +35,13 @@ class UpdateProjectRequest extends FormRequest
             'contract_value' => 'sometimes|required|numeric|min:0',
             'total_budget' => 'sometimes|required|numeric|min:0',
             'status' => 'sometimes|required|in:On-Progress,Completed,Cancelled,Pending',
+
+            /**
+             * Update 11/07/2025
+             * Modifikasi dan penambahan assign team.
+             */
+            'team_members' => 'sometimes|nullable|array',
+            'team_members.*' => 'sometimes|integer|exists:users,id',
         ];
     }
 }

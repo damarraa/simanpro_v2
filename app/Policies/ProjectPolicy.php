@@ -11,11 +11,32 @@ class ProjectPolicy
     use HandlesAuthorization;
 
     /**
+     * 16/07/2025 - Modifikasi penamaan Policy.
+     * Standar Filament Generate menggunakan _ (Underscore) diubah
+     * menjadi :: (Double colon).
+     */
+
+    /**
+     * Menentukan apakah seorang user boleh menambahkan laporan harian ke proyek ini.
+     */
+    public function addDailyReport(User $user, Project $project): bool
+    {
+        // Izinkan jika user memiliki izin umum untuk membuat laporan harian
+        if ($user->can('create::daily::project::report')) {
+            return true;
+        }
+
+        // ATAU, izinkan jika user adalah anggota dari tim proyek ini.
+        return $project->team->contains($user);
+    }
+    
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_project');
+        return $user->can('view_any::project');
+        // return $user->can('view_any_project');
     }
 
     /**
@@ -31,7 +52,7 @@ class ProjectPolicy
          * Skenario: Siapa yang boleh melihat detail satu proyek?
          * Aturan: Boleh jika ia punya izin umum atau ia adalah PM proyek ini dan atau ia adalah tim proyek ini.
          */
-        if ($user->can('view_project')) {
+        if ($user->can('view::project')) {
             return true;
         }
 
@@ -43,7 +64,8 @@ class ProjectPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_project');
+        return $user->can('create::project');
+        // return $user->can('create_project');
     }
 
     /**
@@ -59,7 +81,7 @@ class ProjectPolicy
          * Skenario: Siapa yang boleh mengedit proyek?
          * Aturan: Boleh jika ia punya izin umum atau ia adalah PM proyek ini.
          */
-        if ($user->can('update_project')) {
+        if ($user->can('update::project')) {
             return true;
         }
 
@@ -71,7 +93,8 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project): bool
     {
-        return $user->can('delete_project');
+        return $user->can('delete::project');
+        // return $user->can('delete_project');
     }
 
     /**
@@ -79,7 +102,8 @@ class ProjectPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_project');
+        return $user->can('delete_any::project');
+        // return $user->can('delete_any_project');
     }
 
     /**
@@ -87,7 +111,8 @@ class ProjectPolicy
      */
     public function forceDelete(User $user, Project $project): bool
     {
-        return $user->can('force_delete_project');
+        return $user->can('force_delete::project');
+        // return $user->can('force_delete_project');
     }
 
     /**
@@ -95,7 +120,8 @@ class ProjectPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_project');
+        return $user->can('force_delete_any::project');
+        // return $user->can('force_delete_any_project');
     }
 
     /**
@@ -103,7 +129,8 @@ class ProjectPolicy
      */
     public function restore(User $user, Project $project): bool
     {
-        return $user->can('restore_project');
+        return $user->can('restore::project');
+        // return $user->can('restore_project');
     }
 
     /**
@@ -111,7 +138,8 @@ class ProjectPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_project');
+        return $user->can('restore_any::project');
+        // return $user->can('restore_any_project');
     }
 
     /**
@@ -119,7 +147,8 @@ class ProjectPolicy
      */
     public function replicate(User $user, Project $project): bool
     {
-        return $user->can('replicate_project');
+        return $user->can('replicate::project');
+        // return $user->can('replicate_project');
     }
 
     /**
@@ -127,6 +156,7 @@ class ProjectPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_project');
+        return $user->can('reorder::project');
+        // return $user->can('reorder_project');
     }
 }
